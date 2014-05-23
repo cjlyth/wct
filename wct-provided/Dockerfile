@@ -5,7 +5,7 @@ MAINTAINER  Christopher Lyth <cjlyth@gmail.com>
 
 ADD wct.tar.gz /tmp/wct-dist
 
-cp /tmp/wct-dist/war/* /usr/local/tomcat/webapps/
+RUN cp /tmp/wct-dist/war/* /usr/local/tomcat/webapps/
 
 CMD ["bash"]
 ENTRYPOINT ["/usr/bin/env"]
