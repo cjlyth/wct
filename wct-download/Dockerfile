@@ -8,5 +8,7 @@ RUN \
 	mkdir -p /tmp/wct-dist; \
 	tar xa -C /tmp/wct-dist -f /tmp/wct.tar.gz
 
+cp /tmp/wct-dist/war/* /usr/local/tomcat/webapps/
+
 CMD ["bash"]
 ENTRYPOINT ["/usr/bin/env"]
