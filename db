@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+tput clear
+
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+magenta=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+uline=$(tput smul)
+reset=$(tput sgr0)
+
+# tput smso && echo "hi" && tput rmso
+
+function print-val()
+{
+	echo -en "${2:-$cyan}$1$reset" 
+}
+
+[[ -z "$1" ]] && {
+	echo "You must pass the $(print-val "image name" $yellow) as the first argument." >&2
+	exit 1
+}
+
+repo_src="$(cd $1 && pwd)"
+repo_src_color="$(print-val $repo_src $magenta)"
+
+[[ -s "$repo_src/Dockerfile" ]] || {
+	echo "Unable to find a non empty $(print-val "Dockerfile" $yellow) in $repo_src_color " >&2
+	exit 2
+}
+
+docker_login="$(docker info 2>/dev/null | grep -Ei '^username: ' | awk '{print $2}')"
+repo_parent="$(dirname $repo_src | xargs basename)"
+docker_username="${docker_username:-${docker_login:-$repo_parent}}"
+docker_username="${docker_username:-$(whoami)}"
+
+login="$docker_username"
+login_color="$(print-val $login $blue)"
+
+repo_name="${repo_src##*/}"
+repo_name_color="$(print-val $repo_name $yellow)"
+
+build_tag="$login/$repo_name"
+build_tag_color="$login_color/$repo_name_color"
+
+
+echo
+debug_str="${cyan}#${reset}%10s: %.40s\n"
+printf "$cyan%`tput cols`s"|tr ' ' '#'
+printf "$debug_str" "login" "$login_color"
+printf "$debug_str" "repo_name" "$repo_name_color"
+printf "$debug_str" "repo_src" "$repo_src_color"
+printf "$cyan%`tput cols`s"|tr ' ' '#'
+echo -en "# ${reset}Building Image${cyan}\n#\n${reset}"
+
+
+
+
+docker build -t "$build_tag" "$repo_src" && {
+cat <<EOF
+$cyan\
+#
+# ${green}Build finished${reset} for image: ${build_tag_color} ${cyan}
+# ${reset}Check Dockerfile in directory ${repo_src_color} ${cyan}
+EOF
+} || {
+cat <<ERR_MSG
+$cyan\
+#
+# ${red}Build failed${reset} for image: ${build_tag_color} ${cyan}
+# ${reset}Check Dockerfile in directory ${repo_src_color} ${cyan}
+ERR_MSG
+}
+printf "%`tput cols`s\n"|tr ' ' '#'
+echo
+exit 0

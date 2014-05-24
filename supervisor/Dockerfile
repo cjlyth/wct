@@ -7,7 +7,7 @@ RUN update-locale LANG=en_US.UTF-8 LC_MESSAGES=POSIX
 
 # supervisor
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -qqy supervisor
-add supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # /supervisor
 
 
