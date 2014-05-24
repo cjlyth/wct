@@ -2,6 +2,9 @@ FROM dockerfile/java
 
 MAINTAINER  Christopher Lyth <cjlyth@gmail.com>
 ENTRYPOINT ["/usr/bin/env"]
+
+ADD ./*.tar.gz /opt/
+
 ADD ./ /download
 RUN cp /download/*.tar.gz /tmp/
 RUN wget -nc -O /tmp/mysql.tar.gz --progress=bar \

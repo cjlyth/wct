@@ -1,0 +1,30 @@
+{
+	"folders":
+	[
+		{
+			"name": "Scripts",
+			"follow_symlinks": true,
+			"path": "./bin"
+		},
+		{
+			"name": "MySQL",
+			"follow_symlinks": true,
+			"path": "./mysql"
+		},
+		{
+			"name": "Tomcat",
+			"follow_symlinks": true,
+			"path": "./tomcat"
+		},
+		{
+			"name": "Supervisor",
+			"follow_symlinks": true,
+			"path": "./supervisor/"
+		},
+		{
+			"name": "WCT",
+			"follow_symlinks": true,
+			"path": "./wct"
+		}
+	]
+}
